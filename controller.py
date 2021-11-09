@@ -27,26 +27,33 @@ class ODOP:
                 print('Error: controller not ready')
                 break
 
-    def execute(self, command: str, output: str = '', delay: float = 2.):
-        # delay in seconds
-        print(f'executing {command}')
+    def execute(self, command: str, output = b'', time_window = 2.):
+        # read_window in seconds
+        print(f'\nexecuting {command}')
 
         # Send command
         self.controller .write(bytes(command, 'utf-8'))
         time.sleep(0.05)
 
         time_start = time.time()  # in seconds
-        while time.time() < time_start + delay:
+        while time.time() < time_start + time_window:
             data = self.controller .readline()
             if data: print(data)
 
-        # return data
-        # return True if found output
+            if not output:
+                return True
+            elif data and data == output:
+                return True
+        
+        return False
 
-    def read (self):
-        while True:
+
+    def read (self, time_window: float = 2.):
+        time_start = time.time()  # in seconds
+        while time.time() < time_start + time_window:
             data = self.controller .readline()
             if data: print(data)
+
 
 
 
