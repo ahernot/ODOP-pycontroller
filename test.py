@@ -12,6 +12,13 @@ def write_read(x):
     return data
 
 
+
+
+def send(command, result):
+    x
+    
+
+
 while True:
 
     time_start = time.time()  # in seconds
