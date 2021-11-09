@@ -5,9 +5,9 @@ from preferences import *
 
 
 
-class ODOP:
+class Controller:
 
-    def __init__(self, baud_rate: int = BAUD_RATE, port = PORT, ready_msg = READY_MSG, time_init_max = TIME_INIT_MAX):
+    def __init__ (self, baud_rate: int = BAUD_RATE, port = PORT, ready_msg = READY_MSG, time_init_max = TIME_INIT_MAX):
         self.controller = serial.Serial(port=PORT, baudrate=BAUD_RATE, timeout=.1)
         self.ready_msg = ready_msg
         self.ready = False
@@ -17,7 +17,7 @@ class ODOP:
         if not self.ready:
             self.__check_ready()
     
-    def __check_ready(self):
+    def __check_ready (self):
         while True:
             data = self.controller .readline()
             if data == self.ready_msg:
@@ -27,7 +27,7 @@ class ODOP:
                 print('Error: controller not ready')
                 break
 
-    def execute(self, command: str, output = b'', time_window = 2.):
+    def execute (self, command: str, output = b'', time_window = 2.):
         # read_window in seconds
         print(f'\nexecuting {command}')
 
@@ -55,5 +55,28 @@ class ODOP:
             if data: print(data)
 
 
+class ODOP (Controller):
 
+    def get_version (self):
+        pass
 
+    def get_status (self):
+        self.execute ('status', b'Status ok')
+
+    # Calibration
+    def estimate_zero (self):
+        self.execute ('estimate_zero', b'estimate_zero: success')
+    def set_zero (self):
+        return self.execute ('set_zero', b'set_zero: success')
+
+    # Motion
+    def move_relative (self, axis: str, value: float):
+        axis = axis.lower()
+        if axis not in ('x', 'y'): return False
+        return self.execute (f'angle {axis} {float(value)}', f'angle_{axis}: success')
+
+    def move_absolute (self, axis: str, value: float):
+        axis = axis.lower()
+        if axis not in ('x', 'y'): return False
+        return self.execute (f'move {axis} {float(value)}', f'move_{axis}: success')
+    
