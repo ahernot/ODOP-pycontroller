@@ -9,9 +9,11 @@ if __name__ == '__main__':
 
     while not odop.ready:
         time.sleep(0.1)
+    
+    success = odop.execute ('status', b'Status ok\r\n')
+    print(success)
 
-    print(odop.ready)
-
-    x = odop.execute ('status')
+    success = odop.execute ('angle x 10', b'angle_x: success\r\n', 20.)
+    print(success)
 
     odop.read()
