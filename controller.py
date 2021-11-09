@@ -1,8 +1,12 @@
+# Copyright (C) 2021 Anatole Hernot (github.com/ahernot), Mines Paris (PSL Research University). All rights reserved.
+
 import serial  # pip install pyserial
 import time
 
 from preferences import *
 
+
+#TODO: python needs to print whatever the controller sends through serial
 
 
 class Controller:
@@ -28,18 +32,16 @@ class Controller:
                 break
 
     def execute (self, command: str, readback = b'', time_window = 2.):
-        # read_window in seconds
         print(f'\nexecuting {command}')
 
         # Send command
         self.controller .write(bytes(command, 'utf-8'))
         time.sleep(0.05)
 
+        # Process readback
         time_start = time.time()  # in seconds
         while time.time() < time_start + time_window:
             data = self.controller .readline()
-            if data: print(data)
-
             if not readback:
                 return True
             elif data and data == readback:
@@ -49,10 +51,12 @@ class Controller:
 
 
     def read (self, time_window: float = 2.):
+        buffer = list()
         time_start = time.time()  # in seconds
         while time.time() < time_start + time_window:
             data = self.controller .readline()
-            if data: print(data)
+            if data: buffer.append(data)
+        return buffer
 
 
 class ODOP (Controller):
@@ -61,11 +65,8 @@ class ODOP (Controller):
         super(ODOP, self).__init__ (baud_rate, port, ready_msg, time_init_max)
         self.__angles = {'x': 0, 'y': 0}
 
-    def get_version (self):
-        pass
-
-    def get_status (self):
-        self.execute ('status', b'Status ok')
+    # def get_version (self): self.execute ('version')  # issue: doesn't print version
+    def get_status (self): self.execute ('status', b'Status ok')
 
     def get_angle (self, axis: str):
         if axis not in ('x', 'y'): return None
