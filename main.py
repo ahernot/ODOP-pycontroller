@@ -18,9 +18,11 @@ if __name__ == '__main__':
     # Initialise composer
     composer = Composer(
         odop=odop,
-        vertical_shots_nb=10,
-        horizontal_shots_nb=36
+        vertical_shots_nb=6,
+        horizontal_shots_nb=4
     )
 
     # Run composer
     composer.run()
+
+#add calibration in protocol
