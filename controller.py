@@ -83,11 +83,11 @@ class ODOP (Controller):
         axis = axis.lower()
         if axis not in ('x', 'y'): return False
         self.__angles [axis] += value
-        return self.execute (command=f'angle {axis} {float(value)}', readback=f'angle_{axis}: success', time_window=max(2*value, 2))
+        return self.execute (command=f'move_rel {axis} {float(value)}', readback=f'move_rel {axis}: success', time_window=max(2*value, 2))
 
     def move_absolute (self, axis: str, value: float):
         axis = axis.lower()
         if axis not in ('x', 'y'): return False
         self.__angles [axis] = value
-        return self.execute (command=f'move {axis} {float(value)}', readback=f'move_{axis}: success', time_window=max(2*value, 2))
+        return self.execute (command=f'move_abs {axis} {float(value)}', readback=f'move_abs {axis}: success', time_window=max(2*value, 2))
     
