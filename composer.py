@@ -1,5 +1,7 @@
 # Copyright (C) 2021 Anatole Hernot (github.com/ahernot), Mines Paris (PSL Research University). All rights reserved.
 
+import time
+
 from controller import ODOP
 from preferences import *
 
@@ -16,6 +18,8 @@ class Composer:
         self.y_step_deg = 360 / horizontal_shots_nb
 
     def run (self):
+        self.odop .move_absolute ('x', -15)
+
         # Run through vertical steps (swing rotation)
         for vertical_shot_id in range (self.vertical_shots_nb + 1):
             print('\tCurrent vAngle is {}'.format(self.odop.get_angle('x')))
@@ -31,6 +35,10 @@ class Composer:
                 # Build file name
                 filepath = SESSION_PATH + FILENAME_TEMPLATE .format(vertical_shot_id, self.odop.get_angle('x'), horizontal_shot_id, self.odop.get_angle('x'))
                 print('\t\tRequesting shot: ' + filepath)
+
+                time_now = time.time()
+                while (time.time() < time_now + 2):
+                    pass
 
                 # Take shot
                 #takePhoto(filepath)
