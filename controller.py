@@ -7,7 +7,7 @@ from preferences import *
 
 
 #TODO: python needs to print whatever the controller sends through serial
-#TODO: tune time_window for move commands
+#TODO: tune time_window for move commands, AND FOR ABSOLUTE COMMANDS IN PARTICULAR
 
 
 class Controller:
@@ -25,6 +25,7 @@ class Controller:
     def __check_ready (self):
         while True:
             data = self.controller .readline()
+            if data: print(data.decode('utf-8'))
             if data == self.ready_msg:
                 self.__ready = True
                 break
@@ -44,8 +45,10 @@ class Controller:
 
         # Process readback
         time_start = time.time()  # in seconds
+        print(f'{int(time_start)} - waiting till {int(time_start + time_window)} ({time_window} seconds)')
         while time.time() < time_start + time_window:
             data = self.controller .readline()
+            if data: print(data)#data.decode('utf-8')[:-1])
             if not readback:
                 return True
             elif data and data == readback:
@@ -60,6 +63,7 @@ class Controller:
         while time.time() < time_start + time_window:
             data = self.controller .readline()
             if data: buffer.append(data)
+        print(buffer.decode('utf-8'))
         return buffer
 
 
@@ -70,7 +74,8 @@ class ODOP (Controller):
         self.__angles = {'x': 0, 'y': 0}
 
     # def get_version (self): self.execute ('version')  # issue: doesn't print version
-    def get_status (self): self.execute ('status', b'Status ok')
+    def get_status (self):
+        self.execute ('status', b'Status ok')
 
     def get_angle (self, axis: str):
         if axis not in ('x', 'y'): return None
@@ -78,7 +83,10 @@ class ODOP (Controller):
 
     # Calibration
     def estimate_zero (self):
-        self.execute ('estimate_zero', b'estimate_zero: success')
+        #self.execute ('estimate_zero', b'estimate_zero: success', time_window=120.)  # 2min
+        self.move_relative ('x', -200.)
+        self.move_relative ('x', 15.)
+
     def set_zero (self):
         return self.execute ('set_zero', b'set_zero: success')
 
@@ -87,11 +95,11 @@ class ODOP (Controller):
         axis = axis.lower()
         if axis not in ('x', 'y'): return False
         self.__angles [axis] += value
-        return self.execute (command=f'move_rel {axis} {float(value)}', readback=f'move_rel {axis}: success', time_window=max(2*value, 2))
+        return self.execute (command=f'move_rel {axis} {float(value)}', readback=bytes(f'move_rel {axis}: success\r\n', 'utf-8'), time_window=min(max(abs(2*value), 2), 60))  # no more than 60sec
 
     def move_absolute (self, axis: str, value: float):
         axis = axis.lower()
         if axis not in ('x', 'y'): return False
         self.__angles [axis] = value
-        return self.execute (command=f'move_abs {axis} {float(value)}', readback=f'move_abs {axis}: success', time_window=max(2*value, 2))
+        return self.execute (command=f'move_abs {axis} {float(value)}', readback=bytes(f'move_abs {axis}: success\r\n', 'utf-8'), time_window=30.)  # max(abs(2*value), 2))
     

@@ -23,8 +23,11 @@ class Composer:
 
 
     def run (self):
-        self.odop .move_absolute ('x', self.vertical_angle_min)
-        #!!! if not success: break
+
+        # Move swing to lowest position
+        success = self.odop .move_absolute ('x', self.vertical_angle_min)
+        print(success)
+        #if not success: return False
 
         # Run through vertical steps (swing rotation)
         for vertical_shot_id in range (self.vertical_shots_nb + 1):
@@ -43,8 +46,10 @@ class Composer:
                 print('\t\tRequesting shot: ' + filepath)
 
                 time_now = time.time()
+                print('waiting')
                 while (time.time() < time_now + 2):
                     pass
+                print('done waiting')
 
                 # Take shot
                 self.camera .capture(filepath=filepath)
@@ -54,7 +59,8 @@ class Composer:
                 self.odop .move_relative ('y', self.y_step_deg)
 
             # Move on X-axis (swing)
-            self.odop .move_relative ('x', self.x_step_deg)
-            #!!! if not success: break
+            success = self.odop .move_relative ('x', self.x_step_deg)
+            #if not success: return False
 
         print('Run success')
+        return True

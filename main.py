@@ -2,7 +2,7 @@
 
 import time
 
-from camera import Camera
+from camera import Camera, CameraMac
 from controller import ODOP
 from composer import Composer
 
@@ -11,7 +11,7 @@ from composer import Composer
 if __name__ == '__main__':
 
     # Initialise camera
-    camera = Camera()
+    camera = CameraMac()  # Camera()
     while not camera.ready():
         time.sleep(0.1)
         camera.update_status()
@@ -22,17 +22,19 @@ if __name__ == '__main__':
         time.sleep(0.1)
 
     # Calibrate ODOP
-    odop.estimate_zero()
+    success = odop.estimate_zero()
     # execute commands
     # then validate and set_zero()
+    odop.set_zero()
+    print(odop.get_angle('x'))
 
     # Initialise composer
     composer = Composer(
         odop=odop,
-        vertical_shots_nb=6,
-        horizontal_shots_nb=4
+        camera=camera,
+        vertical_shots_nb=10, #6,
+        horizontal_shots_nb=36 #4
     )
 
     # Run composer
     composer.run()
-

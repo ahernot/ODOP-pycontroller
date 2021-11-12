@@ -49,3 +49,19 @@ class Camera:
         command = f'"{dgccTool}" {dgccSnapCommand} {filepath}'
         os.system(command)
         return True
+
+
+class CameraMac:
+
+    def __init__ (self):
+        self.__ready = True
+    
+    def update_status (self):
+        pass
+
+    def ready (self):
+        return self.__ready
+
+    def capture (self, filepath: str):
+        print('Capturing')
+        return True
