@@ -22,9 +22,15 @@ if __name__ == '__main__':
         time.sleep(0.1)
 
     # Calibrate ODOP
-    success = odop.estimate_zero()
+    success = odop.estimate_zero()  # remonter after no delay (after limit reached)
     # execute commands
     # then validate and set_zero()
+
+    while True:
+        command = input()
+        if command == 'go': break
+        odop.execute(command)
+    
     odop.set_zero()
     print(odop.get_angle('x'))
 

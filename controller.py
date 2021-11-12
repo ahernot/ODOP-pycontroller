@@ -85,7 +85,7 @@ class ODOP (Controller):
     def estimate_zero (self):
         #self.execute ('estimate_zero', b'estimate_zero: success', time_window=120.)  # 2min
         self.move_relative ('x', -200.)
-        self.move_relative ('x', 15.)
+        self.move_relative ('x', 25.)
 
     def set_zero (self):
         return self.execute ('set_zero', b'set_zero: success')
