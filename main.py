@@ -7,6 +7,9 @@ from controller import ODOP
 from composer import Composer
 
 
+# ADD PREFERENCE FOR TIME TO WAIT FOR SHOT
+# camera doesn't wait for 360
+
 
 if __name__ == '__main__':
 

@@ -84,7 +84,8 @@ class ODOP (Controller):
     # Calibration
     def estimate_zero (self):
         #self.execute ('estimate_zero', b'estimate_zero: success', time_window=120.)  # 2min
-        self.move_relative ('x', -200.)
+        self.execute ('move_rel x -200', b'move_rel x: limit reached\r\n', time_window=60.)
+        # self.move_relative ('x', -200.)
         self.move_relative ('x', 25.)
 
     def set_zero (self):

@@ -26,8 +26,7 @@ class Composer:
 
         # Move swing to lowest position
         success = self.odop .move_absolute ('x', self.vertical_angle_min)
-        print(success)
-        #if not success: return False
+        if not success: return False
 
         # Run through vertical steps (swing rotation)
         for vertical_shot_id in range (self.vertical_shots_nb + 1):
@@ -35,7 +34,9 @@ class Composer:
 
             # Reset Y-axis angle
             print('\tResetting hAngle. Was {}'.format(self.odop.get_angle('y')))
-            self.odop .move_absolute ('y', 0)
+            #self.odop .move_absolute ('y', 0)
+            success = self.odop .execute ('move_abs y 0', b'move_abs y: success\r\n', 60.)
+            if not success: return False
 
             # Run through horizontal steps (turntable rotation)
             for horizontal_shot_id in range (self.horizontal_shots_nb):
@@ -60,7 +61,7 @@ class Composer:
 
             # Move on X-axis (swing)
             success = self.odop .move_relative ('x', self.x_step_deg)
-            #if not success: return False
+            if not success: return False
 
         print('Run success')
         return True
