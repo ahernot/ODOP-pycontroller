@@ -1,3 +1,5 @@
+# Copyright (C) 2021 SmartPixels & Anatole Hernot (github.com/ahernot), Mines Paris (PSL Research University). All rights reserved.
+
 import os
 import subprocess
 
