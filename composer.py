@@ -2,6 +2,7 @@
 
 import time
 
+from camera import Camera
 from controller import ODOP
 from preferences import *
 
@@ -9,23 +10,28 @@ from preferences import *
 
 class Composer:
 
-    def __init__ (self, odop: ODOP, vertical_shots_nb: int, horizontal_shots_nb: int):
+    def __init__ (self, odop: ODOP, camera: Camera, vertical_shots_nb: int, horizontal_shots_nb: int, vertical_angle_min: float = X_ANGLE_MIN, vertical_angle_max: float = X_ANGLE_MAX):
         self.odop = odop
+        self.camera = camera
         self.vertical_shots_nb = vertical_shots_nb
         self.horizontal_shots_nb = horizontal_shots_nb
+        self.vertical_angle_min = vertical_angle_min
+        self.vertical_angle_max = vertical_angle_max
 
         self.x_step_deg = (X_ANGLE_MAX - X_ANGLE_MIN) / (vertical_shots_nb - 1)
         self.y_step_deg = 360 / horizontal_shots_nb
 
+
     def run (self):
-        self.odop .move_absolute ('x', -15)
+        self.odop .move_absolute ('x', self.vertical_angle_min)
+        #!!! if not success: break
 
         # Run through vertical steps (swing rotation)
         for vertical_shot_id in range (self.vertical_shots_nb + 1):
             print('\tCurrent vAngle is {}'.format(self.odop.get_angle('x')))
 
             # Reset Y-axis angle
-            print('\tReseting hAngle. Was {}'.format(self.odop.get_angle('y')))
+            print('\tResetting hAngle. Was {}'.format(self.odop.get_angle('y')))
             self.odop .move_absolute ('y', 0)
 
             # Run through horizontal steps (turntable rotation)
@@ -41,12 +47,14 @@ class Composer:
                     pass
 
                 # Take shot
-                #takePhoto(filepath)
+                self.camera .capture(filepath=filepath)
+                time.sleep(1.)  #!!! WAIT FOR SUCCESS
 
-                # Move on Y-axis
+                # Move on Y-axis (turntable)
                 self.odop .move_relative ('y', self.y_step_deg)
 
-            # Move on X-axis
+            # Move on X-axis (swing)
             self.odop .move_relative ('x', self.x_step_deg)
+            #!!! if not success: break
 
         print('Run success')
