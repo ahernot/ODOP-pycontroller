@@ -7,6 +7,7 @@ from preferences import *
 
 
 #TODO: python needs to print whatever the controller sends through serial
+#TODO: tune time_window for move commands
 
 
 class Controller:
@@ -14,22 +15,25 @@ class Controller:
     def __init__ (self, baud_rate: int = BAUD_RATE, port = PORT, ready_msg = READY_MSG, time_init_max = TIME_INIT_MAX):
         self.controller = serial.Serial(port=PORT, baudrate=BAUD_RATE, timeout=.1)
         self.ready_msg = ready_msg
-        self.ready = False
+        self.__ready = False
         self.time_init = time.time()
         self.time_init_max = time_init_max
 
-        if not self.ready:
+        if not self.__ready:
             self.__check_ready()
     
     def __check_ready (self):
         while True:
             data = self.controller .readline()
             if data == self.ready_msg:
-                self.ready = True
+                self.__ready = True
                 break
             if time.time() > self.time_init + self.time_init_max:
                 print('Error: controller not ready')
                 break
+    
+    def ready (self):
+        return self.__ready
 
     def execute (self, command: str, readback = b'', time_window = 2.):
         print(f'\nexecuting {command}')
