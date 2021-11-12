@@ -2,18 +2,29 @@
 
 import time
 
+from camera import Camera
 from controller import ODOP
 from composer import Composer
 
 
 
 if __name__ == '__main__':
+
+    # Initialise camera
+    camera = Camera()
+    while not camera.ready():
+        time.sleep(0.1)
+        camera.update_status()
     
     # Initialise ODOP
     odop = ODOP()
-
-    while not odop.ready:
+    while not odop.ready():
         time.sleep(0.1)
+
+    # Calibrate ODOP
+    odop.estimate_zero()
+    # execute commands
+    # then validate and set_zero()
 
     # Initialise composer
     composer = Composer(
@@ -25,4 +36,3 @@ if __name__ == '__main__':
     # Run composer
     composer.run()
 
-#add calibration in protocol
