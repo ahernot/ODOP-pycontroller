@@ -65,5 +65,5 @@ class CameraPlaceholder:
         return self.__ready
 
     def capture (self, filepath: str):
-        print('Capturing')
+        if DEBUG_VERBOSE: print('Capturing')
         return True

@@ -9,7 +9,9 @@ from preferences import *
 #TODO: python needs to print whatever the controller sends through serial
 #TODO: tune time_window for move commands, AND FOR ABSOLUTE COMMANDS IN PARTICULAR
 #TODO: get_version and get_status
+#TODO: Controller.read()
 
+#time windows must be wide enough to avoid having backlogged processes and the completion message of the previous process validating the next one
 
 class Controller:
 
@@ -26,42 +28,50 @@ class Controller:
     def __check_ready (self):
         while True:
             data = self.controller .readline()
-            if data: print(data.decode('utf-8'))  ##################PRINT
-            if data == self.ready_msg:
-                self.__ready = True
-                break
-            if time.time() > self.time_init + self.time_init_max:
-                print('Error: controller not ready')
-                break
+
+            if data:
+                data_decoded = data.decode(encoding='utf-8')[:-2]
+                if DEBUG_VERBOSE: print(data_decoded)
+
+                if data == self.ready_msg:
+                    self.__ready = True
+                    break
+                if time.time() > self.time_init + self.time_init_max:
+                    print('Error: controller not ready')
+                    break
     
     def ready (self):
         return self.__ready
 
-    def execute (self, command: str, time_window = 2., readback = b'', fatal = b'') -> int:
+    def execute (self, command: str, time_window = 2., readback = '', fatal = '') -> int:
         """
-        0 for readback==readback
-        1 for no readback even though readback specified
-        2 for fatal
+        Execute command and check for readback message and fatal message
+        :param command: command
+        :param time_window: time window to receive readback (in seconds)
+        :param readback: readback message
+        :param fatal: fatal message
+        :return: status value - 0=success, 1=timeout, 2=fatal
         """
 
         # Send command
-        print(f'\nExecuting {command}')
+        print(f'Executing {command}') ##################PRINT
         self.controller .write(bytes(command, 'utf-8'))
         time.sleep(0.05)
 
         # Process readback
         time_start = time.time()  # in seconds
-        # print(f'{int(time_start)} - waiting till {int(time_start + time_window)} ({time_window} seconds)')
-        
+        if DEBUG_VERBOSE: print(f'{int(time_start)} - waiting till {int(time_start + time_window)} ({time_window} seconds)')
         while time.time() < time_start + time_window:
             # Read data
             data = self.controller .readline()
-            
+
             if data:
-                print(data) #.decode('utf-8')[:-1])  ##################PRINT
-                if readback and data == readback:  # Exit loop with success
+                data_decoded = data.decode(encoding='utf-8')[:-2]
+                if DEBUG_VERBOSE: print(data_decoded)
+
+                if readback and data_decoded == readback:  # Exit loop with success
                     return 0
-                if fatal and data == fatal:  # Exit loop with failure
+                if fatal and data_decoded == fatal:  # Exit loop with failure
                     return 2
 
         if readback: return 1
@@ -70,11 +80,15 @@ class Controller:
 
     def read (self, time_window: float = 2.):
         buffer = list()
+
         time_start = time.time()  # in seconds
         while time.time() < time_start + time_window:
             data = self.controller .readline()
             if data: buffer.append(data)
-        print(buffer.decode('utf-8')) ##################PRINT
+
+        buffer_decoded = buffer.decode('utf-8')[:-2]
+        if DEBUG_VERBOSE: print(buffer_decoded)
+
         return buffer
 
 
@@ -87,7 +101,7 @@ class ODOP (Controller):
     # def get_version (self): self.execute ('version')
 
     def get_status (self):
-        val = self.execute (command='status', time_window=2., readback=b'Status ok\r\n')
+        val = self.execute (command='status', time_window=2., readback='Status ok')
         if val == 0: return True, ''
         else: return False, 'unable to verify status'
 
@@ -98,25 +112,24 @@ class ODOP (Controller):
 
     # Calibration
     def estimate_zero (self) -> tuple:
-        #self.execute ('estimate_zero', b'estimate_zero: success', time_window=120.)  # 2min
+        #self.execute (command='estimate_zero', time_window=120., readback='estimate_zero: success')
 
         # Move to bottom of range
         val = self.execute (
-            command='move_rel x -200',
-            time_window=2., #120., ############################# DEBUG
-            readback=b'move_rel x: limit reached\r\n',
-            fatal=b'move_rel x: success\r\n'
+            command='move_rel x -2', #-200', ############################# DEBUG
+            time_window=10., #120., ############################# DEBUG
+            readback='move_rel x: limit reached',
+            fatal='move_rel x: success'
         )
-        print(val)
         #if val != 0: return False, 'unable to reach minimum'  # Exit if didn't find end stop ############################# DEBUG
 
         # Move up to estimate zero position
-        success, msg = self.move_relative ('x', 25.)
+        success, msg = self.move_relative ('x', 25)
         return success, msg
 
 
     def set_zero (self) -> bool:
-        val = self.execute (command='set_zero', time_window=2., readback=b'set_zero: success\r\n')
+        val = self.execute (command='set_zero', time_window=2., readback='set_zero: success')
         return val == 0
 
 
@@ -134,8 +147,8 @@ class ODOP (Controller):
         val = self.execute (
             command=f'move_rel {axis} {float(value)}',
             time_window=min(max(abs(2*value), 2), 60),  # no more than 60sec
-            readback=bytes(f'move_rel {axis}: success\r\n', 'utf-8'),
-            fatal=bytes(f'move_rel {axis}: limit reached\r\n', 'utf-8')
+            readback=f'move_rel {axis}: success',
+            fatal=f'move_rel {axis}: limit reached'
         )
 
         # Process output
@@ -157,8 +170,8 @@ class ODOP (Controller):
         val = self.execute (
             command=f'move_abs {axis} {float(value)}',
             time_window=30.,
-            readback=bytes(f'move_abs {axis}: success\r\n', 'utf-8'),
-            fatal=bytes(f'move_abs {axis}: limit reached\r\n', 'utf-8')
+            readback=f'move_abs {axis}: success',
+            fatal=f'move_abs {axis}: limit reached'
         )
 
         # Process output

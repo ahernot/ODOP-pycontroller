@@ -12,10 +12,12 @@ dgccSnapCommand = " /c capture "
 # Serial settings
 PORT = '/dev/cu.usbmodem101'  # 'COM5'
 BAUD_RATE = 9600
-READY_MSG = b'Controller ready\r\n'
+READY_MSG = 'Controller ready'
 
 TIME_INIT_MAX = 60  # in seconds
 
 # X-axis angular range
 X_ANGLE_MIN = -15.
 X_ANGLE_MAX = 90.
+
+DEBUG_VERBOSE = True

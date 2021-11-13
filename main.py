@@ -27,12 +27,14 @@ if __name__ == '__main__':
     success, msg = odop.estimate_zero()
     if not success: raise InterruptedError(f'estimate_zero failure - {msg}')
 
+    print('\nInput relative adjustments (in deg). Type \'go\' to set zero.')
     while True:
-        command = input('$ ')
+        command = input('$ ')  # need to input '3' for 'move_rel x 3'
         if command == 'go': break
-        odop.execute(command) # time window?
+        odop.move_relative('x', float(command))
     
     odop.set_zero()
+    # print('\n')
 
     # Initialise composer
     composer = Composer(
@@ -41,6 +43,8 @@ if __name__ == '__main__':
         vertical_shots_nb=10, #6,
         horizontal_shots_nb=36 #4
     )
+
+    input('\nComposer initialised. Press any key to begin run.')
 
     # Run composer
     success, msg = composer.run()
