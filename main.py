@@ -5,9 +5,7 @@ import time
 from camera import Camera, CameraPlaceholder
 from controller import ODOP
 from composer import Composer
-
-
-# ADD PREFERENCE FOR TIME TO WAIT FOR SHOT
+from preferences import *
 
 
 if __name__ == '__main__':
@@ -18,23 +16,21 @@ if __name__ == '__main__':
         time.sleep(0.1)
         camera.update_status()
     
+
     # Initialise ODOP
     odop = ODOP()
     while not odop.ready():
         time.sleep(0.1)
 
+
     # Calibrate ODOP
+    print('\nCalibrating ODOP')
     success, msg = odop.estimate_zero()
     if not success: raise InterruptedError(f'estimate_zero failure - {msg}')
-
-    print('\nInput relative adjustments (in deg). Type \'go\' to set zero.')
-    while True:
-        command = input('$ ')  # need to input '3' for 'move_rel x 3'
-        if command == 'go': break
-        odop.move_relative('x', float(command))
-    
+    success, msg = odop.adjust_position('x')
+    if not success: raise InterruptedError(f'manual calibration failure - {msg}')
     odop.set_zero()
-    # print('\n')
+
 
     # Initialise composer
     composer = Composer(
@@ -44,7 +40,7 @@ if __name__ == '__main__':
         horizontal_shots_nb=36 #4
     )
 
-    input('\nComposer initialised. Press any key to begin run.')
+    input(f'\nComposer initialised. Press any key to begin run.\n{RUN_MESSAGE}')
 
     # Run composer
     success, msg = composer.run()

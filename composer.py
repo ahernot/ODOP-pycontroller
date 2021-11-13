@@ -23,7 +23,7 @@ class Composer:
 
 
     def run (self) -> tuple:
-        print('\nBegin run')
+        print('\nStarting run')
 
         # Move swing to lowest position
         success, val = self.odop .move_absolute ('x', self.vertical_angle_min)
@@ -34,7 +34,8 @@ class Composer:
             print(f'\tCurrent vAngle is {self.odop.get_angle("x")}')
 
             # Reset Y-axis angle
-            #print('\tResetting hAngle. Was {}'.format(self.odop.get_angle('y')))
+            print('\tResetting hAngle. Was {}'.format(self.odop.get_angle('y')))
+            self.odop .set_angle ('y', 0.)
             #success, val = self.odop .execute (command='move_abs y 0', time_window=60., readback='move_abs y: success')
             #if not success: return False, val
 
@@ -47,9 +48,9 @@ class Composer:
                 print(f'\t\tRequesting shot: {filepath}')
 
                 # Take shot
-                time.sleep(1.)
+                time.sleep(DELAY_BEFORE_SHOT)
                 self.camera .capture(filepath=filepath)
-                time.sleep(1.)
+                time.sleep(DELAY_AFTER_SHOT)
 
                 # Move on Y-axis (turntable)
                 self.odop .move_relative ('y', self.y_step_deg)
