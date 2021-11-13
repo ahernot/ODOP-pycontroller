@@ -2,19 +2,18 @@
 
 import time
 
-from camera import Camera, CameraMac
+from camera import Camera, CameraPlaceholder
 from controller import ODOP
 from composer import Composer
 
 
 # ADD PREFERENCE FOR TIME TO WAIT FOR SHOT
-# camera doesn't wait for 360
 
 
 if __name__ == '__main__':
 
     # Initialise camera
-    camera = CameraMac()  # Camera()
+    camera = CameraPlaceholder()  # Camera()
     while not camera.ready():
         time.sleep(0.1)
         camera.update_status()
@@ -25,17 +24,15 @@ if __name__ == '__main__':
         time.sleep(0.1)
 
     # Calibrate ODOP
-    success = odop.estimate_zero()  # remonter after no delay (after limit reached)
-    # execute commands
-    # then validate and set_zero()
+    success, msg = odop.estimate_zero()
+    if not success: raise InterruptedError(f'estimate_zero failure - {msg}')
 
     while True:
-        command = input()
+        command = input('$ ')
         if command == 'go': break
-        odop.execute(command)
+        odop.execute(command) # time window?
     
     odop.set_zero()
-    print(odop.get_angle('x'))
 
     # Initialise composer
     composer = Composer(
@@ -46,4 +43,5 @@ if __name__ == '__main__':
     )
 
     # Run composer
-    composer.run()
+    success, msg = composer.run()
+    if not success: raise InterruptedError(f'run failure - {msg}')
