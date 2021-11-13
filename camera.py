@@ -36,11 +36,13 @@ class Camera:
         self.update_status()
 
     def update_status (self):
-        if (process_exists(dgccMainEXE)):
-            self.__ready = True
-        else:
-            print('DGCC is not running. Please launch the app and then run Camera.update_status()')
-            self.__ready = False
+        # if (process_exists(dgccMainEXE)):
+        #     self.__ready = True
+        # else:
+        #     print('DGCC is not running. Please launch the app and then run Camera.update_status()')
+        #     self.__ready = False
+
+        self.__ready = True  # override (process_exists doesn't work)
 
     def ready (self):
         return self.__ready
@@ -51,7 +53,7 @@ class Camera:
         return True
 
 
-class CameraMac:
+class CameraPlaceholder:
 
     def __init__ (self):
         self.__ready = True
