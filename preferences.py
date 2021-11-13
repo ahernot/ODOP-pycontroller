@@ -32,4 +32,5 @@ RUN_MESSAGE = 'Make sure to remove all calibration cables before starting run.'
 
 
 
-#time windows must be wide enough to avoid having backlogged processes and the completion message of the previous process validating the next one
+# Time windows must be wide enough to avoid having backlogged processes and the completion message of the previous process validating the next one
+# Document that Y channel is used for xLimMax
