@@ -33,17 +33,17 @@ class Composer:
             print('\tCurrent vAngle is {}'.format(self.odop.get_angle('x')))
 
             # Reset Y-axis angle
-            print('\tResetting hAngle. Was {}'.format(self.odop.get_angle('y')))
+            #print('\tResetting hAngle. Was {}'.format(self.odop.get_angle('y')))
             #self.odop .move_absolute ('y', 0)
-            success = self.odop .execute ('move_abs y 0', b'move_abs y: success\r\n', 60.)
-            if not success: return False
+            #success = self.odop .execute ('move_abs y 0', b'move_abs y: success\r\n', 60.)
+            #if not success: return False
 
             # Run through horizontal steps (turntable rotation)
             for horizontal_shot_id in range (self.horizontal_shots_nb):
                 print('\t\tCurrent hAngle is {}'.format(self.odop.get_angle('y')))
 
                 # Build file name
-                filepath = SESSION_PATH + FILENAME_TEMPLATE .format(vertical_shot_id, self.odop.get_angle('x'), horizontal_shot_id, self.odop.get_angle('x'))
+                filepath = SESSION_PATH + FILENAME_TEMPLATE .format(vertical_shot_id, self.odop.get_angle('x'), horizontal_shot_id, self.odop.get_angle('y'))
                 print('\t\tRequesting shot: ' + filepath)
 
                 time_now = time.time()
@@ -53,6 +53,7 @@ class Composer:
                 print('done waiting')
 
                 # Take shot
+                time.sleep(1.)
                 self.camera .capture(filepath=filepath)
                 time.sleep(1.)  #!!! WAIT FOR SUCCESS
 
