@@ -14,7 +14,7 @@ from preferences import *
 if __name__ == '__main__':
     
     # Initialise camera
-    camera = CameraPlaceholder()  # Camera() ############################# DEBUG
+    camera = Camera()
     while not camera.ready():
         time.sleep(0.1)
         camera.update_status()

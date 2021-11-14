@@ -127,12 +127,12 @@ class ODOP (Controller):
 
         # Move to bottom of range
         val = self.execute (
-            command=f'move_rel x -2', #-200', ############################# DEBUG
-            time_window=10., #TIME_WINDOW_MAX, ############################# DEBUG
+            command=f'move_rel x -200',
+            time_window=TIME_WINDOW_MAX,
             readback='move_rel x: limit reached',
             fatal='move_rel x: success'
         )
-        #if val != 0: return False, 'unable to reach minimum'  # Exit if didn't find end stop ############################# DEBUG
+        if val != 0: return False, 'unable to reach minimum'  # Exit if didn't find end stop
 
         # Move up to estimate zero position
         success, msg = self.move_relative ('x', 25)
