@@ -19,6 +19,7 @@ if __name__ == '__main__':
         time.sleep(0.1)
         camera.update_status()
 
+
     # Initialise ODOP
     odop = ODOP()
     while not odop.ready():
@@ -34,7 +35,7 @@ if __name__ == '__main__':
         horizontal_shots_nb = type_input('Enter the number of horizontal shots\n> ', int)
 
         # Create composition
-        composition = Composition(
+        composition = Composition (
             odop=odop,
             camera=camera,
             vertical_shots_nb=vertical_shots_nb,
