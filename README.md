@@ -5,6 +5,7 @@ Copyright (C) 2021 <a href="github.com/ahernot">Anatole Hernot (github.com/ahern
 
 ## Description
 Controller program for <a href="https://www.smartpixels.fr">SmartPixels</a>' <strong>Omni-Directional Object Pictures</strong> (ODOP) automated scanner.
+<br>Built for <a href="https://github.com/ahernot/ODOP-controller">ahernot/ODOP-controller</a>.
 
 <br><br>
 
