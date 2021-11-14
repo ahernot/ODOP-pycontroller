@@ -8,7 +8,7 @@ from preferences import *
 
 
 def process_exists(process_name):
-    #output = ""
+    output = ""
     output = subprocess.Popen('tasklist /FI "imagename eq {process_name}"' , stdin=subprocess.PIPE, stderr=subprocess.PIPE, stdout=subprocess.PIPE) .communicate()[0]
     
     # Check in last line for process name
@@ -42,7 +42,7 @@ class Camera:
         #     print('DGCC is not running. Please launch the app and then run Camera.update_status()')
         #     self.__ready = False
 
-        self.__ready = True  # override (process_exists doesn't work)
+        self.__ready = True  # override (process_exists() doesn't work)
 
     def ready (self):
         return self.__ready
