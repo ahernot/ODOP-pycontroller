@@ -9,6 +9,11 @@ Controller program for <a href="https://www.smartpixels.fr">SmartPixels</a>' <st
 <br><br>
 
 ## Operation
+### 0. Program initialisation
+* <strong>0.1.</strong> Specify the serial communication port (variable `PORT`) in `preferences.py`.
+* <strong>0.2.</strong> Specify the DigiCamControl communiation preferences in `preferences.py`.
+
+
 ### 1. Unpowered calibration
 * <strong>1.1.</strong> With the motors unpowered, position the swing on its lowest position.
 * <strong>1.2.</strong> Mount the camera on the sliding platform.
@@ -36,7 +41,7 @@ Create a new `Composition` object.
 <br><br>
 
 ## Usage guidelines
-* Time windows (in `Controller.execute()`) must be large enough to avoid backlogging commands. Otherwise, the completion success message of the previous command could trigger the end of the next one.
+* Time windows (in `Controller.execute()`) must be set large enough to avoid backlogging commands. Otherwise, the completion success message of the previous command could trigger the end of the next one.
 * ODOP needs to be recalibrated every time a new `ODOP` object is created, due to the fact that the locally-stored positional information is reset in `ODOP.__init__()`.
 
 <br><br>
