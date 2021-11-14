@@ -4,7 +4,7 @@ Copyright (C) 2021 <a href="github.com/ahernot">Anatole Hernot (github.com/ahern
 <br><br>
 
 ## Description
-Controller program for <a href="https://www.smartpixels.fr">SmartPixels</a>' Omni-Directional Object Pictures (ODOP) automated scanner.
+Controller program for <a href="https://www.smartpixels.fr">SmartPixels</a>' <strong>Omni-Directional Object Pictures</strong> (ODOP) automated scanner.
 
 <br><br>
 
@@ -42,5 +42,5 @@ Create a new `Composition` object.
 <br><br>
 
 ## Requirements
-* Python 3 (tested with Python 3.9.0; should work with python 3.6.0 and newer)
-* PySerial (run `pip install pyserial`)
+* Python 3 (tested with Python 3.9.0; should work with Python 3.6.0 and newer)
+* PySerial module (run `pip install pyserial`)
