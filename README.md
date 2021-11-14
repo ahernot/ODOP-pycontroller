@@ -1,5 +1,5 @@
 # ODOP pycontroller v1.0.0
-Copyright (C) 2021 <a href="github.com/ahernot">Anatole Hernot (github.com/ahernot)</a>, Mines Paris (PSL Research University). All rights reserved.
+Copyright (C) 2021 <a href="https://github.com/ahernot">Anatole Hernot (github.com/ahernot)</a>, Mines Paris (PSL Research University). All rights reserved.
 
 <br><br>
 
