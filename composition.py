@@ -8,7 +8,7 @@ from preferences import *
 
 
 
-class Composer:
+class Composition:
 
     def __init__ (self, odop: ODOP, camera: Camera, vertical_shots_nb: int, horizontal_shots_nb: int, vertical_angle_min: float = X_ANGLE_MIN, vertical_angle_max: float = X_ANGLE_MAX):
         self.odop = odop
@@ -59,5 +59,5 @@ class Composer:
             success, val = self.odop .move_relative ('x', self.x_step_deg)
             if not success: return False, val
 
-        print('Run success')
+        print('Run success\n')
         return True, ''
