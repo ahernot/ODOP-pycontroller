@@ -171,6 +171,9 @@ class ODOP (Controller):
 
 
     def calibrate (self):
+        """
+        Calibrate ODOP
+        """
         if STATUS_VERBOSE: print('\nCalibrating ODOP')
         success, msg = self.estimate_zero()
         if not success: raise InterruptedError(f'estimate_zero failure - {msg}')
