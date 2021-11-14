@@ -1,7 +1,12 @@
 # ODOP pycontroller v1.0
 Copyright (C) 2021 <a href="github.com/ahernot">Anatole Hernot (github.com/ahernot)</a>, Mines Paris (PSL Research University). All rights reserved.
 
-<br>
+<br><br>
+
+## Description
+Controller program for <a href="https://www.smartpixels.fr">SmartPixels</a>' Omni-Directional Object Pictures (ODOP) automated scanner.
+
+<br><br>
 
 ## Operation
 ### 1. Unpowered calibration
@@ -28,8 +33,14 @@ Create a new `ODOP` object.
 Create a new `Composition` object. 
 * 3.2. Run the composition. (method `Composition.run()`).
 
-<br>
+<br><br>
 
 ## Usage guidelines
 * Time windows (in `Controller.execute()`) must be large enough to avoid backlogging commands. Otherwise, the completion success message of the previous command could trigger the end of the next one.
 * ODOP needs to be recalibrated every time a new `ODOP` object is created, due to the fact that the locally-stored positional information is reset in `ODOP.__init__()`.
+
+<br><br>
+
+## Requirements
+* Python 3 (tested with Python 3.9.0; should work with python 3.6.0 and newer)
+* PySerial (run `pip install pyserial`)
