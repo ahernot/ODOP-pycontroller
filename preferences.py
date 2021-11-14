@@ -28,4 +28,4 @@ DELAY_AFTER_SHOT = 1.5
 # Verbose
 DEBUG_VERBOSE = False
 STATUS_VERBOSE = True
-RUN_MESSAGE = 'Make sure to remove all calibration cables before starting run.'
+RUN_MESSAGE = 'Make sure to remove all calibration wires before starting run.'
