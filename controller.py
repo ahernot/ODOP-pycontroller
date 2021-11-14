@@ -25,14 +25,13 @@ class Controller:
 
             if data:
                 data_decoded = data.decode(encoding='utf-8')[:-2]
-                if STATUS_VERBOSE:print(data_decoded)
+                if STATUS_VERBOSE: print(data_decoded)
 
                 if data_decoded == self.ready_msg:
                     self.__ready = True
                     break
                 if time.time() > self.time_init + self.time_init_max:
-                    print('Error: controller not ready')
-                    break
+                    raise InterruptedError('controller not ready')
     
     def ready (self):
         return self.__ready
@@ -169,6 +168,15 @@ class ODOP (Controller):
     def set_zero (self) -> bool:
         val = self.execute (command='set_zero', time_window=2., readback='set_zero: success')
         return val == 0
+
+
+    def calibrate (self):
+        if STATUS_VERBOSE: print('\nCalibrating ODOP')
+        success, msg = self.estimate_zero()
+        if not success: raise InterruptedError(f'estimate_zero failure - {msg}')
+        success, msg = self.adjust_position('x')
+        if not success: raise InterruptedError(f'manual calibration failure - {msg}')
+        self.set_zero()
 
 
     # Motion
