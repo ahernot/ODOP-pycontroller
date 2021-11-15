@@ -31,7 +31,7 @@ Create a new `ODOP` object.
     * <strong>2.2.1.</strong> Let the swing move to its lowest position and then back up to the specified calibration point.
     *  <strong>2.2.2.</strong> Mount the back horizontal wire onto the frame.
     * <strong>2.2.3.</strong> Enter manual rotation commands (e.g. "`-1.8`" for -1.8°) until the two wires overlap on the camera's screen.
-    * <strong>2.2.4.</strong> Type "`go`" to validate and set the zero point. The camera should be horizontal wiht respect to the machine.
+    * <strong>2.2.4.</strong> Type "`go`" to validate and set the zero point. The camera should be horizontal with respect to the machine.
 * <strong>2.3.</strong> Remove all calibration wires from the machine.
 
 ### 3. Composition
