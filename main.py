@@ -42,7 +42,7 @@ if __name__ == '__main__':
             horizontal_shots_nb=horizontal_shots_nb
         )
 
-        input(f'\nComposer initialised. Press any key to begin run.\n{RUN_MESSAGE}')
+        input(f'\nComposition initialised. Press any key to begin run.\n{RUN_MESSAGE}')
 
         # Run composer
         success, msg = composition.run()
