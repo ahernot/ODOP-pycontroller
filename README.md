@@ -12,7 +12,7 @@ Controller program for <a href="https://www.smartpixels.fr">SmartPixels</a>' <st
 ## Operation
 ### 0. Program initialisation
 * <strong>0.1.</strong> Specify the serial communication port (variable `PORT`) in `preferences.py`.
-* <strong>0.2.</strong> Specify the DigiCamControl communiation preferences in `preferences.py`.
+* <strong>0.2.</strong> Specify the DigiCamControl communication preferences in `preferences.py`.
 
 
 ### 1. Unpowered calibration
