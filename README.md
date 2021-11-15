@@ -49,4 +49,4 @@ Create a new `Composition` object.
 
 ## Requirements
 * Python 3 (tested with Python 3.9.0; should work with Python 3.6.0 and newer)
-* PySerial module (run `pip install pyserial`)
+* PySerial module (run "`pip install pyserial`")
