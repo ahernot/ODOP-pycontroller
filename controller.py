@@ -36,7 +36,7 @@ class Controller:
     def ready (self):
         return self.__ready
 
-    def execute (self, command: str, time_window = 2., readback = '', fatal = '') -> int:
+    def execute (self, command: str, time_window: float = 2., readback: str = '', fatal: str = '') -> int:
         """
         Execute command and check for readback message and fatal message
         :param command: command
@@ -47,7 +47,7 @@ class Controller:
         """
 
         # Send command
-        print(f'\"{command}\"')
+        if STATUS_VERBOSE: print(f'\"{command}\"')
         self.controller .write(bytes(command, 'utf-8'))
         time.sleep(0.05)
 
