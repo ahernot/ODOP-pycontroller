@@ -35,9 +35,9 @@ Create a new `ODOP` object.
 * <strong>2.3.</strong> Remove all calibration wires from the machine.
 
 ### 3. Composition
-* 3.1. Specify the number of vertical and horizontal shots to be taken.\
+* <strong>3.1.</strong> Specify the number of vertical and horizontal shots to be taken.\
 Create a new `Composition` object. 
-* 3.2. Run the composition. (method `Composition.run()`).
+* <strong>3.2.</strong> Run the composition. (method `Composition.run()`).
 
 <br><br>
 
